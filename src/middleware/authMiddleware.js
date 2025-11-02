@@ -3,10 +3,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const protect = (req, res, next) => {
+  //to check whether token exists or not
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
   try {
+    //to check whether user exists in db or not
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();

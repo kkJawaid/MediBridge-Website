@@ -5,15 +5,15 @@ import { generateToken } from '../utils/token.js';
 export const registerUser = async (req, res) => {
   try {
     const { full_name, email, password } = req.body;
-    const existing = await prisma.user.findUnique({ where: { email } });
+    const existing = await prisma.user.findUnique({ where: { email } }); //key:value shortform
     if (existing) return res.status(400).json({ message: 'Email already in use' });
 
     const hashed = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: { full_name, email, password_hash: hashed },
     });
-    const token = generateToken(user);
-    res.json({ message: 'Registered', token, user: { user_id: user.user_id, full_name: user.full_name, email: user.email } });
+    //const token = generateToken(user); //should only be kept in login
+    res.json({ message: 'Registered', user: { user_id: user.user_id, full_name: user.full_name, email: user.email } });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

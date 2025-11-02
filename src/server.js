@@ -12,7 +12,7 @@ import adminRoutes from './routes/adminRoutes.js';
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); //indicates raw json and not form data
 
 app.get('/', (req, res) => res.send('Medi Bridge API is running'));
 

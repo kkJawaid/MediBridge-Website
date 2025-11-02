@@ -7,6 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OrderStatus {
+  pending
+  approved
+  completed
+  rejected
+  dispatched
+}
+
+enum PaymentStatus {
+  completed
+  pending
+}
 model User {
   user_id      Int       @id @default(autoincrement())
   full_name    String
@@ -48,7 +60,7 @@ model Order {
   user_id      Int
   total_amount Decimal   @db.Decimal(10,2)
   order_type   String
-  status       String    @default("pending")
+  status       OrderStatus @default(pending)
   form_data    Json?
   created_at   DateTime  @default(now())
 
@@ -61,7 +73,7 @@ model Payment {
   payment_id          Int       @id @default(autoincrement())
   order_id            Int       @unique
   payment_method      String?
-  payment_status      String    @default("pending")
+  payment_status     PaymentStatus @default(pending)
   transaction_reference String?
   payment_date        DateTime  @default(now())
 
@@ -79,3 +91,4 @@ model Review {
   user        User      @relation(fields: [user_id], references: [user_id])
   product     Product   @relation(fields: [product_id], references: [product_id])
 }
+
