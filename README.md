@@ -12,24 +12,12 @@ This project aims to make medical care more accessible by offering medical servi
 Contains minimal backend scaffold for the Medi Bridge project.
 Stack: Node.js + Express + Prisma + PostgreSQL (Docker compose included)
 
-## Quick start (using Docker for PostgreSQL)
-1. Copy `.env.example` to `.env` and update values if needed.
-2. Start Postgres:
-   ```bash
-   docker-compose up -d
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Run Prisma migration (this will create DB tables):
-   ```bash
-   npx prisma migrate dev --name init
-   ```
-5. Start dev server:
-   ```bash
-   npm run dev
-   ```
+# Running
+- pre requisites: have postgres installed
+- npm install
+- npx nodemon server.js
+- npx prisma generate to view migrations
+- npx prisma studio to view db
 
 ## Notes
 - Auth uses JWT.
