@@ -14,6 +14,7 @@ Stack: Node.js + Express + Prisma + PostgreSQL (Docker compose included)
 
 # Running
 - pre requisites: have postgres installed
+- configure your .env file by following the instructions in the .env.template file and writing the following command in the terminal: cp .env.template .env
 - npm install
 - npx nodemon server.js
 - npx prisma generate to view migrations
