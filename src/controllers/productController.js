@@ -52,3 +52,28 @@ export const deleteProduct = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+export const addBookmark = async(req, res) => {
+  try {
+    const id = parseInt(req.user.userId);
+    const productId = parseInt(req.params.id);
+    const addedBookmark = await prisma.bookmark.create({ data: {user_id: id, product_id: productId}});
+    res.json(addedBookmark);
+  } catch(err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const removeBookmark = async(req, res) => {
+  try {
+    const id = parseInt(req.user.userId);
+    const productId = parseInt(req.params.id);
+    //finding bookmark id first
+    const bookmark = await prisma.bookmark.findFirst( {where: {user_id: id, product_id: productId}} );
+    //now deleting
+    const deletedBookmark = await prisma.bookmark.delete( {where: {b_id: bookmark.b_id}});
+    res.json(deletedBookmark);
+  } catch(err) {
+    res.status(500).json({ error: err.message });
+  }
+};

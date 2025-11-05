@@ -36,6 +36,7 @@ model User {
   orders       Order[]
   reviews      Review[]
   complaints    Complaint[]
+  bookmarks    Bookmark[]
 }
 
 model Product {
@@ -52,6 +53,7 @@ model Product {
 
   reviews      Review[]
   productorder ProductOrderJunction[] 
+  bookmarks    Bookmark[]
 }
 
 model ProductOrderJunction {
@@ -107,4 +109,14 @@ model Complaint {
   status ComplaintStatus @default(awaiting_response) 
   response String @default("n/a")
   user User @relation(fields: [user_id], references: [user_id])
+}
+
+model Bookmark {
+  b_id Int @id @default(autoincrement())
+  user_id Int 
+  product_id Int
+  created_at DateTime @default(now())
+
+  user User @relation (fields: [user_id], references: [user_id])
+  product Product @relation (fields: [product_id], references: [product_id])
 }
