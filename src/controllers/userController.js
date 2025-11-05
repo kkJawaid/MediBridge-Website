@@ -40,3 +40,26 @@ export const editPassword = async (req, res) => {
         res.status(500).json( {error: err.message} );
     }
 }
+
+
+export const editContact = async(req, res) => {
+     try {
+        const id = parseInt(req.user.userId);
+        const { contact } = req.body;
+        const editedContact = await prisma.user.update( {where: {user_id: id}, data: {contact}});
+        res.json(editedContact);
+    } catch(err) {
+        res.status(500).json( { error: err.message });
+    }
+}
+
+export const editAddress = async(req, res) => {
+     try {
+        const id = parseInt(req.user.userId);
+        const { address } = req.body;
+        const editedAddress = await prisma.user.update( {where: {user_id: id}, data: {address}});
+        res.json(editedAddress);
+    } catch(err) {
+        res.status(500).json( { error: err.message });
+    }
+}

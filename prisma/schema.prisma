@@ -33,6 +33,8 @@ model User {
   password_hash String
   role         String    @default("customer")
   created_at   DateTime  @default(now())
+  contact      String    @default("XXXXXXXXXXXXX")
+  address      String    @default("Street-Town-City-Country")
 
   orders       Order[]
   reviews      Review[]
