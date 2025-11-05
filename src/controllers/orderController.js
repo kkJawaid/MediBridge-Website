@@ -24,6 +24,25 @@ export const createOrder = async (req, res) => {
   }
 };
 
+export const cancelOrder = async(req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const userId = parseInt(req.user.userId);
+    const order = await prisma.order.findFirst( {where: {order_id: id, user_id: userId}});
+    if(order == null) {
+      res.json('Unauthorized cancellation.');
+    }
+    if (order.status == 'approved' || order.status == 'pending') {
+      const cancelled = await prisma.order.update( {where: {order_id: id}, data: {status: 'cancelled'}});
+      res.json(cancelled);
+    }
+    else {
+      res.json(`${order.status} orders cannot be cancelled.`);
+    }
+  } catch(err) {
+    res.status(500).json({ error: err.message });
+  }
+}
 export const getUserOrders = async (req, res) => {
   try {
     const userId = parseInt(req.params.userId);

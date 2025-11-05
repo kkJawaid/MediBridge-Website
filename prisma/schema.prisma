@@ -13,6 +13,7 @@ enum OrderStatus {
   completed
   rejected
   dispatched
+  cancelled
 }
 
 enum PaymentStatus {
