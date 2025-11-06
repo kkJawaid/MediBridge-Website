@@ -1,3 +1,4 @@
+import { parse } from 'dotenv';
 import prisma from '../config/db.js';
 
 export const getProducts = async (req, res) => {
@@ -77,3 +78,13 @@ export const removeBookmark = async(req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const viewBookmarks = async(req, res) => {
+  try {
+    const id = parseInt(req.user.userId);
+    const bookmarks = await prisma.bookmark.findMany({ where: {user_id: id}});
+    res.json(bookmarks);
+  } catch(err) {
+    res.status(500).json({ error: err.message });
+  }
+}

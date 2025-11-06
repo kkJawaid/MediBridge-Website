@@ -78,3 +78,24 @@ export const adminUpdateOrder = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const viewAllOrders = async(req, res) => {
+  try {
+    const id = parseInt(req.user.userId);
+    const allOrders = await prisma.order.findMany( {where: {user_id: id}});
+    res.json(allOrders);
+  } catch(err) {
+    res.status(500).json( {err: error.message });
+  }
+}
+
+export const viewOrder = async(req, res) => {
+  try {
+    const id = parseInt(req.user.userId);
+    const orderId = parseInt(req.params.id);
+    const specificOrder = await prisma.order.findFirst( {where: {user_id: id, order_id: orderId}});
+    res.json(specificOrder);
+  } catch(err) {
+    res.status(500).json( {err: error.message });
+  }
+}
