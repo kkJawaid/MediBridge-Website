@@ -1,4 +1,5 @@
 import prisma from '../config/db.js';
+import { createNotif } from './notificationController.js';
 
 export const createOrder = async (req, res) => {
   try {
@@ -18,6 +19,7 @@ export const createOrder = async (req, res) => {
         product_id: productId
       }
     });
+    //send notif for order placement for status pending
     res.json({order, productOrder});
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -30,10 +32,11 @@ export const cancelOrder = async(req, res) => {
     const userId = parseInt(req.user.userId);
     const order = await prisma.order.findFirst( {where: {order_id: id, user_id: userId}});
     if(order == null) {
-      res.json('Unauthorized cancellation.');
+      return res.json('Unauthorized cancellation.');
     }
     if (order.status == 'approved' || order.status == 'pending') {
       const cancelled = await prisma.order.update( {where: {order_id: id}, data: {status: 'cancelled'}});
+      await createNotif(userId, `Your order with id ${cancelled.order_id} has been cancelled.`);
       res.json(cancelled);
     }
     else {
@@ -73,6 +76,9 @@ export const adminUpdateOrder = async (req, res) => {
     const id = parseInt(req.params.id);
     const { status } = req.body;
     const order = await prisma.order.update({ where: { order_id: id }, data: { status } });
+    //getting user id 
+    const userId = await prisma.order.findFirst({where: {order_id: id}, select: {user_id: true}});
+    await createNotif(userId.user_id, `Your order with id ${order.order_id} has been ${order.status}.`);
     res.json(order);
   } catch (err) {
     res.status(500).json({ error: err.message });

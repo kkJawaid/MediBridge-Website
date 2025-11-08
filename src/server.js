@@ -12,6 +12,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import complaintRoutes from './routes/complaintRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 
 const app = express();
 app.use(cors());
@@ -28,6 +29,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/profile', userRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

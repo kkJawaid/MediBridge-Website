@@ -41,6 +41,7 @@ model User {
   complaints    Complaint[]
   bookmarks    Bookmark[]
   cartitems   CartItem[]
+  notifications Notification[]
 }
 
 model Product {
@@ -137,4 +138,12 @@ model CartItem {
 
   user User @relation (fields: [user_id], references: [user_id])
   product Product @relation (fields: [product_id], references: [product_id])
+}
+
+model Notification {
+  n_id Int @id @default(autoincrement())
+  user_id Int 
+  n_body String 
+
+  user User @relation (fields: [user_id], references: [user_id])
 }

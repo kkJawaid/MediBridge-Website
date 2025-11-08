@@ -11,7 +11,7 @@ export const createPayment = async (req, res) => {
         payment_status: 'completed'
       }
     });
-
+    //notif for payment status complete and incomplete
     await prisma.order.update({
       where: { order_id },
       data: { status: 'approved' }
