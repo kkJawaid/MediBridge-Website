@@ -11,6 +11,7 @@ import reviewRoutes from './routes/reviewRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import complaintRoutes from './routes/complaintRoutes.js';
+import cartRoutes from './routes/cartRoutes.js';
 
 const app = express();
 app.use(cors());
@@ -25,7 +26,8 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/profile', userRoutes);
-app.use('/api/complaints', complaintRoutes)
+app.use('/api/complaints', complaintRoutes);
+app.use('/api/cart', cartRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
