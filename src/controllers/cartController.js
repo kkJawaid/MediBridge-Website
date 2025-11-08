@@ -39,7 +39,7 @@ export const addToCart = async(req, res) => {
                 itemPrice: productPrice.price,
                 totalPrice: productPrice.price
             }
-        });       
+        });
         res.json(addedItem);
     } catch(err) {
         res.status(500).json({error: err.message});
@@ -116,7 +116,8 @@ export const deleteItem = async(req, res) => {
     try {
         const id = parseInt(req.user.userId);
         const productId = parseInt(req.params.id);
-        const deletedItem = await prisma.cartItem.delete({where: {user_id: id, product_id: productId}});
+        const itemId = await prisma.cartItem.findFirst({where: {user_id: id, product_id: productId}, select: {item_id: true}});
+        const deletedItem = await prisma.cartItem.delete({where: {item_id: itemId.item_id}});
         res.json(deletedItem);
     } catch(err) {
         res.status(500).json({ error: err.message});

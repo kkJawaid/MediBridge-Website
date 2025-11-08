@@ -15,7 +15,9 @@ import cartRoutes from './routes/cartRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 
 const app = express();
-app.use(cors());
+//app.use(cors());
+//local host, integration during dev mode
+app.use(cors({ origin: "http://localhost:5173", credentials: true })); 
 app.use(express.json()); //indicates raw json and not form data
 
 app.get('/', (req, res) => res.send('Medi Bridge API is running'));
