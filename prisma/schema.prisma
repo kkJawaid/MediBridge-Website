@@ -26,6 +26,11 @@ enum ComplaintStatus {
   response_sent
 }
 
+enum CartStatus {
+  checked_out
+  pending_checkout
+}
+
 model User {
   user_id      Int       @id @default(autoincrement())
   full_name    String
@@ -41,6 +46,7 @@ model User {
   complaints    Complaint[]
   bookmarks    Bookmark[]
   cartitems   CartItem[]
+  cart Cart?
   notifications Notification[]
 }
 
@@ -99,7 +105,7 @@ model Review {
   review_id   Int       @id @default(autoincrement())
   user_id     Int
   product_id  Int
-  rating      Int
+  rating      Int       @default(0)
   comment     String?
   created_at  DateTime  @default(now())
 
@@ -130,6 +136,7 @@ model Bookmark {
 model CartItem {
   item_id Int @id @default(autoincrement())
   user_id Int 
+  cart_id Int
   product_id Int
   added_at DateTime @default(now())
   quantity Int @default(1)
@@ -138,6 +145,16 @@ model CartItem {
 
   user User @relation (fields: [user_id], references: [user_id])
   product Product @relation (fields: [product_id], references: [product_id])
+  cart    Cart    @relation(fields: [cart_id], references: [cart_id])
+}
+
+model Cart {
+  cart_id Int @id @default(autoincrement())
+  user_id Int @unique
+  cart_status CartStatus @default(pending_checkout)
+
+  user User @relation (fields: [user_id], references: [user_id])
+  items CartItem[]
 }
 
 model Notification {

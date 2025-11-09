@@ -58,6 +58,10 @@ export const addBookmark = async(req, res) => {
   try {
     const id = parseInt(req.user.userId);
     const productId = parseInt(req.params.id);
+    const findBookmark = await prisma.bookmark.findFirst({where: {user_id: id, product_id: productId}});
+    if (findBookmark) {
+      return res.json("Bookmark already present.");
+    }
     const addedBookmark = await prisma.bookmark.create({ data: {user_id: id, product_id: productId}});
     res.json(addedBookmark);
   } catch(err) {
@@ -71,6 +75,9 @@ export const removeBookmark = async(req, res) => {
     const productId = parseInt(req.params.id);
     //finding bookmark id first
     const bookmark = await prisma.bookmark.findFirst( {where: {user_id: id, product_id: productId}} );
+    if (!bookmark) {
+      return res.json("item is no longer in your bookmarks");
+    }
     //now deleting
     const deletedBookmark = await prisma.bookmark.delete( {where: {b_id: bookmark.b_id}});
     res.json(deletedBookmark);
@@ -82,7 +89,7 @@ export const removeBookmark = async(req, res) => {
 export const viewBookmarks = async(req, res) => {
   try {
     const id = parseInt(req.user.userId);
-    const bookmarks = await prisma.bookmark.findMany({ where: {user_id: id}});
+    const bookmarks = await prisma.bookmark.findMany({ where: {user_id: id}, include: {product: true}});
     res.json(bookmarks);
   } catch(err) {
     res.status(500).json({ error: err.message });
