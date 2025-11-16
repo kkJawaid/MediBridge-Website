@@ -63,7 +63,7 @@ export const addToCart = async (req, res) => {
             select: { price: true }
         });
         //determining whether to create a new cart or not
-        const cartStatus = await prisma.cart.findFirst({ where: { user_id: id, cart_status: "pending_checkout" } });
+        const cartStatus = await prisma.cart.findFirst({ where: { user_id: id } });
         if (cartStatus) {
             //creating cart item without creating new cart
             const addedItem = await prisma.cartItem.create({

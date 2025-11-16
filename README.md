@@ -23,5 +23,11 @@ Note: Make sure localhost:5020 does not have an exisiting process running.
 - npx prisma studio to view db
 - [for developers to update schema: ] npx prisma migrate dev
 
+to simulate payment gateway
+- prereq: have ngrok installed
+- on ngrok: ngrok http localhost:5020
+domain should be this: https://aeroballistic-foully-willetta.ngrok-free.dev/
+
 ## Notes
 - Auth uses JWT.
+- Stripe is used in sandbox mode
