@@ -18,10 +18,10 @@ Stack: Node.js + Express + Prisma + PostgreSQL (Docker compose included)
 - configure your .env file by following the instructions in the .env.template file and writing the following command in the terminal: cp .env.template .env
 - npm install
 - npx nodemon server.js
+Note: Make sure localhost:5020 does not have an exisiting process running.
 - npx prisma generate to view migrations
 - npx prisma studio to view db
 - [for developers to update schema: ] npx prisma migrate dev
 
 ## Notes
 - Auth uses JWT.
-- Payments are mocked (no real gateway).
