@@ -6,9 +6,9 @@ export const getAnalytics = async (req, res) => {
     const totalUsers = await prisma.user.count();
     const totalProducts = await prisma.product.count();
     const cancelledOrders = await prisma.order.count({ where: { status: 'cancelled' } });
-    const approvedOrders = await prisma.order.count({ where: { status: 'approved' } });
+    const completedOrders = await prisma.order.count({ where: { status: 'completed' } });
 
-    res.json({ totalOrders, totalUsers, totalProducts, cancelledOrders, approvedOrders });
+    res.json({ totalOrders, totalUsers, totalProducts, cancelledOrders, completedOrders });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -28,7 +28,7 @@ export const getChartsData = async (req, res) => {
         TO_CHAR(DATE_TRUNC('month', created_at), 'YYYY-MM') AS month,
         SUM(total_amount) AS total_amount
       FROM "Order"
-      WHERE status IN ('approved', 'completed', 'dispatched')
+      WHERE status IN ('completed', 'dispatched')
       GROUP BY DATE_TRUNC('month', created_at)
       ORDER BY month;
     `;

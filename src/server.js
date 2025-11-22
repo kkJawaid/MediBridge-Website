@@ -62,8 +62,9 @@ app.post(
                     data: {
                         user_id: userId,
                         total_amount: paymentIntent.amount,
-                        order_type: "n/a",
                         status: "pending",
+                        contact: paymentIntent.metadata.contact,
+                        address: paymentIntent.metadata.address
                     }
                 })
                 //fetching product id from cart and cart items
@@ -100,7 +101,6 @@ app.post(
             case "payment_intent.payment_failed":
                 const failedIntent = event.data.object;
                 console.log("Payment failed:", failedIntent.id);
-                //error mechanism?
                 break;
 
             default:
@@ -130,11 +130,11 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 //stripe endpoint
 app.post("/api/create-payment-intent", async (req, res) => {
     try {
-        const { amount, currency, userId } = req.body;
+        const { amount, currency, userId, contact, address } = req.body;
         const paymentIntent = await stripe.paymentIntents.create({
-            amount,             // in cents
-            currency,           // example: "usd"
-            metadata: { userId },
+            amount,            
+            currency,           
+            metadata: { userId, contact, address },
         });
         res.json({
             clientSecret: paymentIntent.client_secret,

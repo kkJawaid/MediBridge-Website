@@ -9,9 +9,7 @@ datasource db {
 
 enum OrderStatus {
   pending
-  approved
   completed
-  rejected
   dispatched
   cancelled
 }
@@ -21,14 +19,14 @@ enum PaymentStatus {
   pending
 }
 
-enum ComplaintStatus {
-  awaiting_response
-  response_sent
-}
-
 enum CartStatus {
   checked_out
   pending_checkout
+}
+
+enum UserRole {
+  admin
+  customer
 }
 
 model User {
@@ -36,18 +34,14 @@ model User {
   full_name    String
   email        String    @unique
   password_hash String
-  role         String    @default("customer")
+  role         UserRole    @default(customer)
   created_at   DateTime  @default(now())
-  contact      String    @default("XXXXXXXXXXXXX")
-  address      String    @default("Street-Town-City-Country")
 
   orders       Order[]
   reviews      Review[]
-  complaints    Complaint[]
   bookmarks    Bookmark[]
   cartitems   CartItem[]
   cart Cart?
-  notifications Notification[]
 }
 
 model Product {
@@ -80,10 +74,10 @@ model Order {
   order_id     Int       @id @default(autoincrement())
   user_id      Int
   total_amount Decimal   @db.Decimal(10,2)
-  order_type   String
   status       OrderStatus @default(pending)
-  form_data    Json?
   created_at   DateTime  @default(now())
+  contact      String    @default("XXXXXXXXXXXXX")
+  address      String    @default("Street-Town-City-Country")
 
   user         User      @relation(fields: [user_id], references: [user_id])
   payment      Payment?
@@ -111,16 +105,6 @@ model Review {
 
   user        User      @relation(fields: [user_id], references: [user_id])
   product     Product   @relation(fields: [product_id], references: [product_id])
-}
-
-model Complaint {
-  complaint_id Int @id @default(autoincrement())
-  user_id Int 
-  complaint_body String
-  created_at DateTime @default(now())
-  status ComplaintStatus @default(awaiting_response) 
-  response String @default("n/a")
-  user User @relation(fields: [user_id], references: [user_id])
 }
 
 model Bookmark {
@@ -157,10 +141,3 @@ model Cart {
   items CartItem[]
 }
 
-model Notification {
-  n_id Int @id @default(autoincrement())
-  user_id Int 
-  n_body String 
-
-  user User @relation (fields: [user_id], references: [user_id])
-}

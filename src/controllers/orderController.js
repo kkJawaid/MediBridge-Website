@@ -2,13 +2,13 @@ import prisma from '../config/db.js';
 
 export const createOrder = async (req, res) => {
   try {
-    const { productId, formData, orderType, totalAmount } = req.body;
+    const { productId, totalAmount, contact, address } = req.body;
     const order = await prisma.order.create({
       data: {
         user_id: req.user.userId,
-        form_data: formData,
-        order_type: orderType,
         total_amount: totalAmount,
+        contact: contact,
+        address: address,
         created_at: new Date(),
       },
     });
