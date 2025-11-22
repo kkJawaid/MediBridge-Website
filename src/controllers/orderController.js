@@ -1,5 +1,4 @@
 import prisma from '../config/db.js';
-import { createNotif } from './notificationController.js';
 
 export const createOrder = async (req, res) => {
   try {
@@ -19,38 +18,16 @@ export const createOrder = async (req, res) => {
         product_id: productId
       }
     });
-    //send notif for order placement for status pending
     res.json({ order, productOrder });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-export const cancelOrder = async (req, res) => {
-  try {
-    const id = parseInt(req.params.id);
-    const userId = parseInt(req.user.userId);
-    const order = await prisma.order.findFirst({ where: { order_id: id, user_id: userId } });
-    if (order == null) {
-      return res.json('Unauthorized cancellation.');
-    }
-    if (order.status == 'approved' || order.status == 'pending') {
-      const cancelled = await prisma.order.update({ where: { order_id: id }, data: { status: 'cancelled' } });
-      await createNotif(userId, `Your order with id ${cancelled.order_id} has been cancelled.`);
-      res.json(cancelled);
-    }
-    else {
-      res.json(`${order.status} orders cannot be cancelled.`);
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-}
 export const getUserOrders = async (req, res) => {
   try {
     const userId = parseInt(req.params.userId);
     if (req.user.userId !== userId && req.user.role !== 'admin') return res.status(403).json({ message: 'Access denied' });
-    //const orders = await prisma.order.findMany({ where: { user_id: userId }, include: { product: true, payment: true } });
     const orders = await prisma.order.findMany({ where: { user_id: userId }, include: { productorder: { include: { product: true } }, payment: true } });
     res.json(orders);
   } catch (err) {
@@ -61,7 +38,6 @@ export const getUserOrders = async (req, res) => {
 export const getOrderById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    //const order = await prisma.order.findUnique({ where: { order_id: id }, include: { product: true, payment: true } });
     const order = await prisma.order.findUnique({ where: { order_id: id }, include: { productorder: { include: { product: true } }, payment: true } });
     if (!order) return res.status(404).json({ message: 'Not found' });
     if (order.user_id !== req.user.userId && req.user.role !== 'admin') return res.status(403).json({ message: 'Access denied' });
@@ -80,7 +56,6 @@ export const adminUpdateOrder = async (req, res) => {
     console.log("Status 2 ", status);
     //getting user id 
     const userId = await prisma.order.findFirst({ where: { order_id: id }, select: { user_id: true } });
-    await createNotif(userId.user_id, `Your order with id ${order.order_id} has been ${order.status}.`);
     res.json(order);
   } catch (err) {
     console.log("error: ", err);

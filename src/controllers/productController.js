@@ -1,4 +1,3 @@
-import { parse } from 'dotenv';
 import prisma from '../config/db.js';
 
 export const getProducts = async (req, res) => {

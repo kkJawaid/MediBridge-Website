@@ -1,17 +1,8 @@
 import prisma from '../config/db.js';
 
-
-//total price and quant are calculated temporarily, not added to any tables
-//will be added to order table once user confirms order
 export const viewCart = async (req, res) => {
     try {
         const id = parseInt(req.user.userId);
-        // const allItems = await prisma.cartItem.findMany({ where: { user_id: id } });
-        // const totalItems = await prisma.cartItem.aggregate({ where: { user_id: id }, _sum: { quantity: true } });
-        // const totalItemsCount = totalItems._sum.quantity || 0;
-        // const totalPrice = await prisma.cartItem.aggregate({ where: { user_id: id }, _sum: { totalPrice: true } });
-        // const totalPriceSum = totalPrice._sum.totalPrice || 0;
-        // res.json({ allItems, totalItemsCount, totalPriceSum });
         const cart = await prisma.cart.findUnique({
             where: { user_id: id },
             include: {

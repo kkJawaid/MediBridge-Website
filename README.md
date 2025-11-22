@@ -4,14 +4,13 @@ This project aims to make medical care more accessible by offering medical servi
 # Features:
 -  user registration and login 
 -  medical products and services are available which are controlled by admin
+-  sales analytics in admin dashboard
 -  user can place and view their order for products and services
--  users can place a review for their orders
--  users can give feedback/review for products
+-  users can place a review and bookmark products
 -  mock payment gateway for said order
 
-# Medi Bridge Backend (Current)
-Contains minimal backend scaffold for the Medi Bridge project.
-Stack: Node.js + Express + Prisma + PostgreSQL (Docker compose included)
+# Medi Bridge Backend 
+Stack: Node.js + Express + Prisma + PostgreSQL 
 
 # Running
 - pre requisites: have postgres installed

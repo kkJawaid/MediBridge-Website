@@ -11,16 +11,14 @@ import paymentRoutes from './routes/paymentRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import complaintRoutes from './routes/complaintRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
-import notificationRoutes from './routes/notificationRoutes.js';
 import Stripe from "stripe";
 import bodyParser from "body-parser";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
-//app.use(cors());
+
 //local host, integration during dev mode
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
@@ -124,9 +122,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/profile', userRoutes);
-app.use('/api/complaints', complaintRoutes);
 app.use('/api/cart', cartRoutes);
-app.use('/api/notifications', notificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
