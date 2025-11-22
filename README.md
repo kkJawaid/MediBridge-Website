@@ -16,18 +16,24 @@ Stack: Node.js + Express + Prisma + PostgreSQL
 - Deployed here: https://medibridge-website-production.up.railway.app/
 
 # Running For Developers
-- pre requisites: have postgres installed or use the deployed db url
-- configure your .env file by following the instructions in the .env.template file and writing the following command in the terminal: cp .env.template .env
+- pre requisites: have postgres installed
 - npm install
-- npx nodemon server.js
-Note: Make sure localhost:5020 does not have an exisiting process running.
-Note: Make sure localhost:5432 does not have an exisiting process running.
-- npx prisma generate to view migrations
-- npx prisma studio to view db
-- [for developers to update schema: ] npx prisma migrate dev
+- create new .env by .env.template
 
-to simulate payment gateway
+database instructions:
+- npx prisma generate
+- npx prisma migrate dev
+- npx prisma studio (to view db in browser)
+
+running locally instructions:
+- npm run dev OR npx nodemon server.js
+
+payment gateway instructions:
 - ngrok endpoint url is https://medibridge-website-production.up.railway.app/webhook 
+
+to note: 
+- Make sure localhost:5020 does not have an exisiting process running.
+- Make sure localhost:5432 does not have an exisiting process running.
 
 - Note to sir Kashif: To access the admin dashboard, these are the credentials:
     - email: admin@medibridge.com
