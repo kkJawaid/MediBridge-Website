@@ -16,20 +16,15 @@ Stack: Node.js + Express + Prisma + PostgreSQL
 - Deployed here: https://medibridge-website-production.up.railway.app/
 
 # Running For Developers
-- pre requisites: have postgres installed
+- create your .env by .env.template
 - npm install
-- create new .env by .env.template
-
-database instructions:
-- npx prisma generate
-- npx prisma migrate dev
-- npx prisma studio (to view db in browser)
-
-running locally instructions:
 - npm run dev OR npx nodemon server.js
 
-payment gateway instructions:
-- ngrok endpoint url is https://medibridge-website-production.up.railway.app/webhook 
+- currently database is listening from deployed db. if want to set up local db:
+- configure DATABASE_URL in .env to have ur username and password
+- npx prisma generate
+- npx prisma studio (to view db in browser)
+- npx prisma migrate dev (to sync migrations)
 
 to note: 
 - Make sure localhost:5020 does not have an exisiting process running.
@@ -38,6 +33,10 @@ to note:
 - Note to sir Kashif: To access the admin dashboard, these are the credentials:
     - email: admin@medibridge.com
     - password: admin123
+
+payment gateway instructions:
+- ngrok endpoint url is https://medibridge-website-production.up.railway.app/webhook 
+- already configured 
 
 ## Notes
 - Auth uses JWT.
