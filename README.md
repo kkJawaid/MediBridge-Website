@@ -30,10 +30,6 @@ to note:
 - Make sure localhost:5020 does not have an exisiting process running.
 - Make sure localhost:5432 does not have an exisiting process running.
 
-- Note to sir Kashif: To access the admin dashboard, these are the credentials:
-    - email: admin@medibridge.com
-    - password: admin123
-
 payment gateway instructions:
 - ngrok endpoint url is https://medibridge-website-production.up.railway.app/webhook 
 - already configured 
